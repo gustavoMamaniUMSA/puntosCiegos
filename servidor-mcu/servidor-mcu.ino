@@ -20,7 +20,6 @@
 #define APPSK  "visorPCiegos"
 #endif
 
-/* Set these to your desired credentials. */
 const char *ssid = APSSID;
 const char *password = APPSK;
 
@@ -56,49 +55,19 @@ void setup() {
   IPAddress myIP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(myIP);
-  //server.begin();
   startTime = millis();
 }
 
-float senIzquierda(){
+float lecturaDistancia(int pin_trig, int pin_echo) {
   float tiempo;
   float distancia;
-  digitalWrite(pin_trig_i, LOW);
+  digitalWrite(pin_trig, LOW);
   delayMicroseconds(4);
-  digitalWrite(pin_trig_i, HIGH);
+  digitalWrite(pin_trig, HIGH);
   delayMicroseconds(10);
-  digitalWrite(pin_trig_i, LOW);
-  tiempo = pulseIn(pin_echo_i, HIGH);
-  distancia = tiempo/58.3;
-  delay(1);
-  return distancia;
-}
-
-float senDerecha(){
-  float tiempo;
-  float distancia;
-  digitalWrite(pin_trig_d, LOW);
-  delayMicroseconds(4);
-  digitalWrite(pin_trig_d, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pin_trig_d, LOW);
-  tiempo = pulseIn(pin_echo_d, HIGH);
-  distancia = tiempo/58.3;
-  delay(1);
-  return distancia;
-}
-
-float senAtras(){
-  float tiempo;
-  float distancia;
-  digitalWrite(pin_trig_a, LOW);
-  delayMicroseconds(4);
-  digitalWrite(pin_trig_a, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pin_trig_a, LOW);
-  tiempo = pulseIn(pin_echo_a, HIGH);
-  distancia = tiempo/58.3;
-  
+  digitalWrite(pin_trig, LOW);
+  tiempo = pulseIn(pin_echo, HIGH);
+  distancia = tiempo / 58.3;
   delay(1);
   return distancia;
 }
@@ -137,21 +106,20 @@ void loop() {
   String lecturas = estadoLectura();
   float resultado;
   if((millis() - startTime) >= interval){
-    Serial.println("Intenta acceder al servidor");
+    Serial.println("Estableciendo conexión con el servidor");
     if(client.connect(serverIP, serverPort)){
-      Serial.println("Visita exitosa");
-      resultado = senIzquierda();
+      Serial.println("Conexión exitosa");
+      resultado = lecturaDistancia(pin_trig_i, pin_echo_i);
       lecturas += String(resultado);
-      resultado = senAtras();
+      resultado = lecturaDistancia(pin_trig_a, pin_echo_a);
       lecturas += ";"+String(resultado);
-      resultado = senDerecha();
+      resultado = lecturaDistancia(pin_trig_d, pin_echo_d);
       lecturas += ";"+String(resultado);
-      //client.print(String("hola.")+"\n");
       Serial.println(lecturas);
       client.print(String(lecturas)+"\n");
       delay(1);
     }else{
-      Serial.println("Acceso fallido");
+      Serial.println("La conexión ha fallado");
     }
     client.stop();
     startTime = millis();
