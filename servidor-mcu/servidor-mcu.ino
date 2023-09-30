@@ -140,10 +140,6 @@ String lecturaAnalogica() {
   delayMicroseconds(100);
   int segundaLectura = analogRead(pin_direccional);
 
-  Serial.print(primeraLectura);
-  Serial.print("; ");
-  Serial.println(segundaLectura);
-
   // Guiñador izquierdo
   if (primeraLectura > (intervaloIzquierda - tolerancia) && primeraLectura < (intervaloIzquierda + tolerancia)) {
     if (segundaLectura > (intervaloIzquierda - tolerancia) && segundaLectura < (intervaloIzquierda + tolerancia)) {
