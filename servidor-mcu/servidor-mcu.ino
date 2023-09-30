@@ -79,8 +79,8 @@ float lecturaDistancia(uint8_t pin_trig, uint8_t pin_echo) {
   digitalWrite(pin_trig, HIGH);
   delayMicroseconds(10);
   digitalWrite(pin_trig, LOW);
-  tiempo = pulseIn(pin_echo, HIGH);
-  if (tiempo > 24000) {
+  tiempo = pulseIn(pin_echo, HIGH,  24000);
+  if (tiempo > 24000 || tiempo < 290) {
     return 0.0;
   }
   distancia = tiempo / 58.3;
