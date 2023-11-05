@@ -23,6 +23,10 @@ git checkout feat/cliente-mcu
 ```
 Una vez compilado el código fuente, verificar con un teléfono móvil si efecivamente se ha creado una red wifi con el nombre especificado en el código. De no ser así, verificar la alimentación de la placa de desarrollo o la integridad del mismo.
 
+## Esquema de prototipo lector de distancias
+Para realizar las diferentes pruebas, puedes seguir el siguiente esquema de armado ![Esquema de prototipo](assets/EsquemaPuntosCiegos.png)
+Recuerda que las conexiones dependerán de la configuración que definas en el código fuente
+
 ## Prueba de envío de datos por sockets
 Finalmente, si las pruebas se realizaron correctamente, se puede realizar la prueba de envío de lecturas a la aplicación móvil. El código fuente se encuentra en la rama ```main``` con el siguiente comando:
 ```bash
@@ -30,3 +34,16 @@ git checkout main
 ```
 Al conectarse la aplicación móvil a la red wifi generada por la placa NodeMCU, se debe poder apreciar la recepción de datos, los cuales serán interpretados por el mismo y se visualizará en la interfaz de usuario.
 
+## Prueba de envío de datos por sockets
+Si deseas descargar la aplicación móvil, puedes escanear el siguiente código qr ![Interfaz de Arduino IDE](assets/visorpuntosciegos.png)
+
+## Repositorio de aplicación móvil
+Si desear el código fuente de la aplicación móvil, puedes encontrarlo en el siguiente repositorio
+```bash
+# Repositorio
+https://github.com/gustavoMamaniUMSA/app
+
+# Clonar repositorio
+git clone https://github.com/gustavoMamaniUMSA/app.git
+```
+El repositorio es público y si deseas contribuir con nuevas funcionalidades, puedes realizar Pull Request a la rama develop.
