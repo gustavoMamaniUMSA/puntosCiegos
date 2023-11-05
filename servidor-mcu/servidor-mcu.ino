@@ -56,9 +56,6 @@ void setup() {
   pinMode(pin_echo_a, INPUT);
   pinMode(pin_trig_d, OUTPUT);
   pinMode(pin_echo_d, INPUT);
-  // pinMode(pin_izquierda, INPUT);
-  // pinMode(pin_inactivo, INPUT);
-  // pinMode(pin_derecha, INPUT);
   pinMode(pin_direccional, INPUT);
   Serial.println();
   Serial.print("Configurando red wifi...");
@@ -83,51 +80,6 @@ float lecturaDistancia(uint8_t pin_trig, uint8_t pin_echo) {
   if (tiempo > 24000 || tiempo < 290) {
     return 0.0;
   }
-  distancia = tiempo / 58.3;
-  delay(1);
-  return distancia;
-}
-
-// Lectura de distancias (retorna el valor en centímetros)
-float lecturaIzquierda() {
-  float tiempo;
-  float distancia;
-  digitalWrite(pin_trig_i, LOW);
-  delayMicroseconds(4);
-  digitalWrite(pin_trig_i, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pin_trig_i, LOW);
-  tiempo = pulseIn(pin_echo_i, HIGH);
-  distancia = tiempo / 58.3;
-  delay(1);
-  return distancia;
-}
-
-// Lectura de distancias (retorna el valor en centímetros)
-float lecturaDerecha() {
-  float tiempo;
-  float distancia;
-  digitalWrite(pin_trig_d, LOW);
-  delayMicroseconds(4);
-  digitalWrite(pin_trig_d, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pin_trig_d, LOW);
-  tiempo = pulseIn(pin_echo_d, HIGH);
-  distancia = tiempo / 58.3;
-  delay(1);
-  return distancia;
-}
-
-// Lectura de distancias (retorna el valor en centímetros)
-float lecturaAtras() {
-  float tiempo;
-  float distancia;
-  digitalWrite(pin_trig_a, LOW);
-  delayMicroseconds(4);
-  digitalWrite(pin_trig_a, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pin_trig_a, LOW);
-  tiempo = pulseIn(pin_echo_a, HIGH);
   distancia = tiempo / 58.3;
   delay(1);
   return distancia;
@@ -183,23 +135,19 @@ void loop() {
   }
 
   String lecturas = lecturaAnalogica();
-  // float resultado;
   unsigned long currentMillis = millis();
   if(((currentMillis - previousMillis) >= interval) && (client.connect(serverIP, serverPort))){
     previousMillis = currentMillis;
 
     // Lectura de distancia de sensor izquierdo
-    // resultado = lecturaIzquierda();
     float resultado_i = lecturaDistancia(pin_trig_i, pin_echo_i);
     lecturas += String(resultado_i);
 
     // Lectura de distancia de sensor trasero
-    // resultado = lecturaAtras();
     float resultado_a = lecturaDistancia(pin_trig_a, pin_echo_a);
     lecturas += ";"+String(resultado_a);
 
     // Lectura de distancia de sensor derecho
-    // resultado = lecturaDerecha();
     float resultado_d = lecturaDistancia(pin_trig_d, pin_echo_d);
     lecturas += ";"+String(resultado_d);
 
